@@ -1,41 +1,40 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { FormService } from './form.service';
+import { InputComponent } from '../input/input.component';
+import { ValidationSectionComponent } from '../validation-section/validation-section.component';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [
+    FormsModule,
+    NgClass,
+    InputComponent,
+    ReactiveFormsModule,
+    ValidationSectionComponent,
+  ],
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss',
+  providers: [FormService],
 })
 export class FormComponent {
-  inputValue: string = '';
+  public formGroup = new FormGroup({
+    password: new FormControl(''),
+  });
+
+  constructor(private formService: FormService) {}
 
   getClass(sectionId: number) {
-    if (this.inputValue.length > 0 && this.inputValue.length < 8) {
-      return 'bg-red-500';
-    }
-
-    if (this.inputValue.length === 0) {
-      return 'bg-slate-400';
-    }
-
-    const regex = [
-      /[^\w\s\p{L}]/u.test(this.inputValue),
-      /\d/.test(this.inputValue),
-      /[a-zA-Zа-яА-Я]/.test(this.inputValue),
-    ];
-
-    const countRegex = regex.filter((reg) => reg === true).length;
-
-    if (countRegex === 1) {
-      if (sectionId === 1) return 'bg-red-500';
-    } else if (countRegex === 2) {
-      if (sectionId !== 3) return 'bg-yellow-500';
-    } else if (countRegex === 3) {
-      return 'bg-green-500';
-    }
-    return 'bg-slate-400';
+    return this.formService.getClass(
+      this.formGroup.value.password || '',
+      sectionId
+    );
   }
 }

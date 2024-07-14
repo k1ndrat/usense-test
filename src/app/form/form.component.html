@@ -1,12 +1,9 @@
-<form class="m-auto max-w-2xl w-full p-6 border-[3px] rounded-md shadow-2xl">
+<form [formGroup]="formGroup" class="m-auto max-w-2xl w-full p-6 border-[3px] rounded-md shadow-2xl">
   <h2 class="text-3xl text-white mb-6 pb-2 border-b-2">Form</h2>
-
-  <input type="password" [(ngModel)]="inputValue" [ngModelOptions]="{standalone: true}" placeholder="Enter password" class="py-3 px-5 w-full text-2xl mb-4">
-	
+  <app-input [formControlName]="'password'"></app-input>
   <ul class="flex flex-col gap-3">
-    <li class="h-8 transition-all" [ngClass]="getClass(1)"></li>
-    <li class="h-8 transition-all" [ngClass]="getClass(2)"></li>
-    <li class="h-8 transition-all" [ngClass]="getClass(3)"></li>
+    <app-validation-section [ngClass]="getClass(1)"></app-validation-section>
+    <app-validation-section [ngClass]="getClass(2)"></app-validation-section>
+    <app-validation-section [ngClass]="getClass(3)"></app-validation-section>
   </ul>
-
 </form>
